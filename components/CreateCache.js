@@ -68,10 +68,10 @@ export default function App({ navigation }) {
         const cache = {
             title: title,
             description: desc,
-            latitude: parseInt(lat),
-            longitude: parseInt(lng)
+            latitude: parseFloat(lat),
+            longitude: parseFloat(lng)
         };
-
+        
         db.collection('Caches').add(cache).then((doc) => {
             Alert.alert('Cache creation complete!');
             navigation.navigate('Caches');

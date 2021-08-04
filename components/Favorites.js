@@ -7,30 +7,15 @@ import { useIsFocused } from "@react-navigation/native";
 
 export default function App({ navigation, route }) {
     const isFocused = useIsFocused();
-    const [cache, setCache] = useState([]);
-
-    const fnAddCache = () => {
-        navigation.navigate('Create Cache');
-    }
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity onPress={ fnAddCache }>
-                    <Text style={styles.addBtn}>+</Text>
-                </TouchableOpacity>
-            ),
-            headerLeft: () => null
-        })
-    }, [navigation]);
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
-        db.collection('Caches').get().then((querySnapshot => {
+        db.collection('Favorites').get().then((querySnapshot => {
             const arr = [];
             querySnapshot.forEach(documentSnapshot => {
                 arr.push({ ...documentSnapshot.data(), key: documentSnapshot.id });
             });
-            setCache(arr);
+            setFavorites(arr);
         }));
     }, [isFocused]);
 
@@ -52,34 +37,18 @@ export default function App({ navigation, route }) {
     );
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                style={styles.flatList}
-                data={ cache }
-                keyExtractor={item => item.key}
-                renderItem={renderItem}
-            />
-            <TouchableOpacity style={styles.btnFav} onPress={() => { navigation.navigate('Favorites')}}>
-                <Text style={styles.favs}>Favorites</Text>
-            </TouchableOpacity>
-        </View>
+        <FlatList
+            style={styles.container}
+            data={ favorites }
+            keyExtractor={item => item.key}
+            renderItem={renderItem}
+        />
     );
 }
 
 const styles = StyleSheet.create({
   container: {
-      height: '100%',
     backgroundColor: '#003f5c'
-  },
-  flatList: {
-    backgroundColor: '#003f5c',
-    height: '86%',
-    flexGrow: 0
-  },
-  addBtn: {
-      color: constants.AppFontColor,
-      fontSize: 25,
-      paddingRight: 10
   },
   item: {
       color: constants.AppFontColor,
@@ -94,22 +63,5 @@ const styles = StyleSheet.create({
       color: constants.AppFontColor,
       fontSize: 18,
       fontWeight: 'bold'
-  },
-  btnFav: {
-    width:"40%",
-    borderStyle: 'solid',
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 20,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:30,
-    marginLeft: 122
-  },
-  favs: {
-    color: constants.AppFontColor,
-    fontSize: 18,
-    fontWeight: 'bold'
   }
 });

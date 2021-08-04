@@ -9,8 +9,10 @@ import SignUp from './components/SignUp';
 import Caches from './components/Caches';
 import Create from './components/CreateCache';
 import GeoLoc from './components/GeoLocation';
+import Favorites from './components/Favorites';
 
 const stack = createStackNavigator();
+
 const opt = {
   headerStyle: {
     backgroundColor: constants.AppBGColor,
@@ -31,6 +33,7 @@ export default function App() {
         <stack.Screen name = "Caches"   component = { Caches } options = { opt } />
         <stack.Screen name = "Create Cache" component = { Create } options = { opt } />
         <stack.Screen name = "GeoLocation"  component = { GeoLoc } options = { opt } />
+        <stack.Screen name = "Favorites"  component = { Favorites } options = { opt } />
       </stack.Navigator>
     </NavigationContainer>
   );
